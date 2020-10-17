@@ -1,12 +1,38 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+  <router-view default="{name: 'login'}"></router-view>
   </div>
 </template>
+
+<script>
+import {mapGetters} from "vuex";
+
+export default {
+  computed:{
+  ...mapGetters(["recipes"])
+},
+beforecreated(){
+this.loaduser();
+
+},
+mounted(){
+this.fetchData();
+},
+
+methods:{
+ async fetchData(){
+  await this.$store.dispatch("fetchRecipes");
+ //  console.log(this.$store.getters.recipes);
+  },
+  loaduser(){
+    let users=[{"email":"admin@demo.com","password":"admin"}]
+          localStorage.setItem('users', JSON.stringify(users));
+         // localStorage.setItem('isAuthenticated',false);
+
+  }
+}
+}
+</script>
 
 <style lang="scss">
 #app {
